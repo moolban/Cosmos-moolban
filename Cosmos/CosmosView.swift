@@ -282,7 +282,7 @@ Shows: ★★★★☆ (123)
     
     if settings.isStarAnimation {
         var i = 0
-        for var layer in self.layer.sublayers! {
+        for layer in self.layer.sublayers! {
             if i >= Int(ceil(rating)){
                 break
             }

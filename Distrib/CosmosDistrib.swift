@@ -450,6 +450,8 @@ struct CosmosDefaultSettings {
   
   /// When `true` the star fill level is updated when user touches the cosmos view. When `false` the Cosmos view only shows the rating and does not act as the input control.
   static let updateOnTouch = true
+    
+    static let isStarAnimation = false
 }
 
 
@@ -1093,6 +1095,8 @@ public struct CosmosSettings {
   
   /// When `true` the star fill level is updated when user touches the cosmos view. When `false` the Cosmos view only shows the rating and does not act as the input control.
   public var updateOnTouch = CosmosDefaultSettings.updateOnTouch
+    
+    public var isStarAnimation: Bool = false
 }
 
 
@@ -1440,6 +1444,26 @@ Shows: ★★★★☆ (123)
   /// Detecting event when the user lifts their finger.
   open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     if settings.passTouchesToSuperview { super.touchesEnded(touches, with: event) }
+    
+    if settings.isStarAnimation {
+        var i = 0
+        for layer in self.layer.sublayers! {
+            if i >= Int(ceil(rating)){
+                break
+            }
+            let scale = CABasicAnimation(keyPath: "transform")
+            var tr = CATransform3DIdentity
+            tr = CATransform3DTranslate(tr, layer.bounds.size.width/2, layer.bounds.size.height/2, 0)
+            tr = CATransform3DScale(tr, 1.2, 1.2, 1)
+            tr = CATransform3DTranslate(tr, -layer.bounds.size.width/2, -layer.bounds.size.height/2, 0)
+            scale.toValue = NSValue.init(caTransform3D: tr)
+            scale.duration = 0.5
+            scale.autoreverses = true;
+            layer.add(scale, forKey:nil)
+            i+=1
+        }
+    }    
+    
     didFinishTouchingCosmos?(rating)
   }
 
@@ -1591,6 +1615,12 @@ Shows: ★★★★☆ (123)
       settings.emptyImage = emptyImage
     }
   }
+    
+    @IBInspectable var isStarAnimation: Bool = CosmosDefaultSettings.isStarAnimation {
+        didSet {
+            settings.isStarAnimation = isStarAnimation
+        }
+    }
   
   /// Draw the stars in interface buidler
   open override func prepareForInterfaceBuilder() {
