@@ -99,6 +99,8 @@ public struct CosmosSettings {
   
   /// When `true` the star fill level is updated when user touches the cosmos view. When `false` the Cosmos view only shows the rating and does not act as the input control.
   public var updateOnTouch = CosmosDefaultSettings.updateOnTouch
+    
+    public var isStarAnimation: Bool = false
 }
 
 
