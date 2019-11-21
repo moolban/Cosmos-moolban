@@ -104,4 +104,7 @@ struct CosmosDefaultSettings {
   static let updateOnTouch = true
     
     static let isStarAnimation = false
+
+  /// Set to `true` if you want to ignore pan gestures (can be useful when presented modally with a `presentationStyle` of `pageSheet` to avoid competing with the dismiss gesture)
+  static let disablePanGestures = false
 }

@@ -452,6 +452,9 @@ struct CosmosDefaultSettings {
   static let updateOnTouch = true
     
     static let isStarAnimation = false
+
+  /// Set to `true` if you want to ignore pan gestures (can be useful when presented modally with a `presentationStyle` of `pageSheet` to avoid competing with the dismiss gesture)
+  static let disablePanGestures = false
 }
 
 
@@ -1522,6 +1525,9 @@ public struct CosmosSettings {
   public var updateOnTouch = CosmosDefaultSettings.updateOnTouch
     
     public var isStarAnimation: Bool = false
+
+  /// Set to `true` if you want to ignore pan gestures (can be useful when presented modally with a `presentationStyle` of `pageSheet` to avoid competing with the dismiss gesture)
+  public var disablePanGestures = CosmosDefaultSettings.disablePanGestures
 }
 
 
@@ -1890,6 +1896,14 @@ Shows: ★★★★☆ (123)
     }    
     
     didFinishTouchingCosmos?(rating)
+  }
+
+  /// Deciding whether to recognize a gesture.
+  open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    if settings.disablePanGestures {
+      return !(gestureRecognizer is UIPanGestureRecognizer)
+    }
+      return true
   }
 
   /**
